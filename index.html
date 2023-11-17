@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoComplete Example</title>
+    <style>
+        #suggestion-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+        }
+        #suggestion-list li {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="searchInput" placeholder="Type a country name">
+
+    <ul id="suggestion-list"></ul>
+
+    <script>
+        // Assume this is your JSON data
+        const jsonData = [
+            { name: "Afghanistan" },
+            { name: "Albania" },
+            { name: "Algeria" },
+            // ... (add more data)
+        ];
+
+        const searchInput = document.getElementById('searchInput');
+        const suggestionList = document.getElementById('suggestion-list');
+
+        searchInput.addEventListener('input', function() {
+            const userInput = searchInput.value.toLowerCase();
+            const suggestions = getFilteredSuggestions(userInput);
+
+            displaySuggestions(suggestions);
+        });
+
+        function getFilteredSuggestions(userInput) {
+            return jsonData.filter(item => item.name.toLowerCase().includes(userInput));
+        }
+
+        function displaySuggestions(suggestions) {
+            suggestionList.innerHTML = '';
+
+            suggestions.forEach(suggestion => {
+                const li = document.createElement('li');
+                li.textContent = suggestion.name;
+                li.addEventListener('click', function() {
+                    searchInput.value = suggestion.name;
+                    suggestionList.innerHTML = '';
+                });
+                suggestionList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
